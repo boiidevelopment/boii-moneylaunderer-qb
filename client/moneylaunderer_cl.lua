@@ -11,7 +11,6 @@ local PlayerLoad = Config.CoreSettings.PlayerLoad
 local UpdateJob = Config.CoreSettings.UpdateJob
 local washloc = 0
 local pJob = nil
-local washloaded = false
 local washing = false
 --<!>-- DO NOT EDIT ANYTHING ABOVE THIS TEXT UNLESS YOU KNOW WHAT YOU ARE DOING SUPPORT WILL NOT BE PROVIDED IF YOU IGNORE THIS --<!>--
 
@@ -23,6 +22,11 @@ end)
 --<!>-- NOTIFICATIONS END --<!>--
 
 --<!>-- SETUP --<!>--
+-- Spawn ped
+CreateThread(function()
+    washloc = math.random(1, #Config.MoneyWash.Locations)
+    SetupMoneyWash()
+end)
 -- Job blacklist
 function BlacklistedJob()
     local pJob = Core.Functions.GetPlayerData().job
@@ -49,7 +53,7 @@ RegisterNetEvent(PlayerLoad, function()
     if BlacklistedJob() or ServiceJob() then
         DeleteBlip()
     else
-        CreateDeliveryBlip()
+        SetupMoneyWash()
     end
 end)
 -- Player job update
@@ -57,7 +61,7 @@ RegisterNetEvent(UpdateJob, function()
     if BlacklistedJob() or ServiceJob() then
         DeleteBlip()
     else
-        CreateDeliveryBlip()
+        SetupMoneyWash()
     end
 end)
 -- Setup wash ped/blip
@@ -73,10 +77,6 @@ end
 --<!>-- CREATE/DELETE BLIPS --<!>--
 -- Create blip
 function CreateDeliveryBlip()
-    if BlacklistedJob() or ServiceJob() then
-        DeleteBlip()
-        return
-    end
     DeleteBlip()
     blip = AddBlipForCoord(Config.MoneyWash.Locations[washloc]["x"],Config.MoneyWash.Locations[washloc]["y"],Config.MoneyWash.Locations[washloc]["z"])
     SetBlipSprite(blip, 500)
@@ -96,11 +96,6 @@ end
 --<!>-- CREATE/DELETE BLIPS --<!>--
 
 --<!>-- PED SPAWN/DELETE --<!>--
--- Spawn ped
-CreateThread(function()
-    washloc = math.random(1, #Config.MoneyWash.Locations)
-    SetupMoneyWash()
-end)
 function SpawnNewPed()
     for k, v in pairs(Config.MoneyWash.Ped) do
         RequestModel(GetHashKey(v.model))
@@ -138,8 +133,7 @@ end
 --<!>- RANGE CHECK --<!>--
 -- Thread to check if near ped
 CreateThread(function()
-    while true do
-        Wait(10000)
+    while washing do
         NearWashPed()
     end
 end)
