@@ -10,7 +10,7 @@ author 'case#1993'
 
 description 'BOII | Development - Utility; Money Launderer'
 
-version '1.0.0'
+version '1.0.1'
 
 lua54 'yes'
 
