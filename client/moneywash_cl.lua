@@ -149,7 +149,7 @@ function NearWashPed()
     local pCoord = GetEntityCoords(player)
     local distance = GetDistanceBetweenCoords(pCoord.x, pCoord.y, pCoord.z, Config.MoneyWash.Locations[washloc]["x"],Config.MoneyWash.Locations[washloc]["y"],Config.MoneyWash.Locations[washloc]["z"]-1, true)
     if ServiceJob() and distance < Config.MoneyWash.Services.Range then
-        --DeleteWashPed()
+        DeleteWashPed()
     end
     if distance <= Config.MoneyWash.Range then
         return true
@@ -166,7 +166,7 @@ RegisterNetEvent('boii-moneylaunderer:cl:UseLaunderer', function()
     local chance = Config.MoneyWash.Chance
     if not NearWashPed() then return end
     if BlacklistedJob() then return end
-    --if ServiceJob() then return end
+    if ServiceJob() then return end
     if Config.MoneyWash.RequireCops then
         Core.Functions.TriggerCallback('boii-moneylaunderer:sv:CopCount', function(CurrentCops)
             if CurrentCops >= Config.MoneyWash.RequiredCops then
