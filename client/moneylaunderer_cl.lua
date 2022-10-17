@@ -53,7 +53,7 @@ RegisterNetEvent(PlayerLoad, function()
     if BlacklistedJob() or ServiceJob() then
         DeleteBlip()
     else
-        SetupMoneyWash()
+        CreateDeliveryBlip()
     end
 end)
 -- Player job update
@@ -61,7 +61,7 @@ RegisterNetEvent(UpdateJob, function()
     if BlacklistedJob() or ServiceJob() then
         DeleteBlip()
     else
-        SetupMoneyWash()
+        CreateDeliveryBlip()
     end
 end)
 -- Setup wash ped/blip
