@@ -31,7 +31,7 @@ Enjoy! :)
 ```
 
 ### PREVIEW ###
-COMING SOON REFER TO SCRIPT PREVIEWS IN DISCORD
+[YOUTUBE](https://www.youtube.com/watch?v=RZhfpvJ-Krw)
 
 ### SUPPORT ###
 [DISCORD](https://discord.gg/MUckUyS5Kq)
