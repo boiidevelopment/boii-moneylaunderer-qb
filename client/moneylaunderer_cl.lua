@@ -67,9 +67,7 @@ end)
 -- Setup wash ped/blip
 function SetupMoneyWash()
     washloc = math.random(1, #Config.MoneyWash.Locations)
-    if Config.MoneyWash.Blip.Wash.Use then
-        CreateDeliveryBlip()
-    end
+    CreateDeliveryBlip()
     SpawnNewPed()
 end
 --<!>-- SETUP --<!>--
@@ -77,15 +75,17 @@ end
 --<!>-- CREATE/DELETE BLIPS --<!>--
 -- Create blip
 function CreateDeliveryBlip()
-    DeleteBlip()
-    blip = AddBlipForCoord(Config.MoneyWash.Locations[washloc]["x"],Config.MoneyWash.Locations[washloc]["y"],Config.MoneyWash.Locations[washloc]["z"])
-    SetBlipSprite(blip, 500)
-    SetBlipScale(blip, 0.8)
-    SetBlipColour(blip, 4)
-    SetBlipAsShortRange(blip, false)
-    BeginTextCommandSetBlipName("STRING")
-    AddTextComponentString(Language.Ped['blip'])
-    EndTextCommandSetBlipName(blip)
+    if Config.MoneyWash.Blip.Wash.Use then
+        DeleteBlip()
+        blip = AddBlipForCoord(Config.MoneyWash.Locations[washloc]["x"],Config.MoneyWash.Locations[washloc]["y"],Config.MoneyWash.Locations[washloc]["z"])
+        SetBlipSprite(blip, 500)
+        SetBlipScale(blip, 0.8)
+        SetBlipColour(blip, 4)
+        SetBlipAsShortRange(blip, false)
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentString(Language.Ped['blip'])
+        EndTextCommandSetBlipName(blip)
+    end
 end
 -- Delete blip
 function DeleteBlip()
@@ -161,6 +161,7 @@ RegisterNetEvent('boii-moneylaunderer:cl:UseLaunderer', function()
     if not NearWashPed() then return end
     if BlacklistedJob() then return end
     if ServiceJob() then return end
+    if washing then return end
     if Config.MoneyWash.RequireCops then
         Core.Functions.TriggerCallback('boii-moneylaunderer:sv:CopCount', function(CurrentCops)
             if CurrentCops >= Config.MoneyWash.RequiredCops then
